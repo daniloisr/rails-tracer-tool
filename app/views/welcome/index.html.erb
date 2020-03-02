@@ -1,0 +1,20 @@
+<h1>Hello <%= @user.full_name %></h1>
+
+<%= content_tag :pre, '', data: { tracer_url: get_stack_path(id: @interceptor.id, format: :json) } %>
+
+<script>
+const interceptor = (() => {
+  const container = document.querySelector('[data-tracer-url]')
+  fetch(
+    container.attributes['data-tracer-url'].value,
+    {
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    }
+  )
+    .then(data => data.json())
+    .then(json => container.innerHTML = JSON.stringify(json, undefined, '  '))
+    .catch(data => { container.innerHTML = data })
+})()
+</script>
